@@ -1,6 +1,6 @@
 {
   "name": "@yazanaabed/react-autocomplete",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "This autocomplete component built to show what render props pattern can do with react and how much it flexible",
   "main": "src/index.js",
   "directories": {
@@ -49,12 +49,10 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "babel-preset-minify": "^0.5.0"
-  },
-  "peerDependencies": {
-    "react": ">=0.14",
-    "react-dom": ">=0.14",
-    "react-scripts": "2.0.4"
+    "babel-preset-minify": "^0.5.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "^2.0.4"
   },
   "standard": {
     "ignore": [
