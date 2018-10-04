@@ -1,4 +1,4 @@
-# React Tabs
+# React Autocomplete
 This autocomplete component built to show what render props pattern can do with react and how much it flexible.
 
 ## Introduction
@@ -40,26 +40,17 @@ This autocomplete component built to show what render props pattern can do with 
                 itemsFiltered
                   .map((item, index) =>
                     <li {...getItemProps({ item, index })}>
-                      <TeamMemberItem teamMember={item}
-                                      hideRole={true}
-                                      active={index === highlightedIndex}
-                                      className={styles.dropdownItem} />
+                      <ComponentExample
+                             active={index === highlightedIndex}
+                             className={styles.dropdownItem} />
                     </li>
                   )
               }
 
               {
-                !itemsFiltered.length && this.props.teamItems.length?
+                !itemsFiltered.length?
                   <li className={styles.noItemsFound}>
-                    <h1 className={styles.notFoundTitle}>Team member not found.</h1>
-                    <h3 className={styles.notFindSubTitle}>Maybe she/he is not yet in your team?</h3>
-                  </li> : null
-              }
-
-              {
-                !this.props.teamItems.length?
-                  <li className={styles.noItemsFound}>
-                    <h1 className={styles.title}>No Team member left.</h1>
+                    <h1 className={styles.notFoundTitle}>Not found.</h1>
                   </li> : null
               }
             </ul>
