@@ -29,6 +29,8 @@ let packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 packageJson['main'] = 'index.js';
 delete packageJson['devDependencies'];
+delete packageJson['scripts'];
+delete packageJson['directories']['src'];
 
 console.log("........................................");
 console.log("Start appending package.json...");
