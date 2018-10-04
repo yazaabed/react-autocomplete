@@ -38,13 +38,12 @@ export default class Autocomplete extends React.Component {
       this.changeState({
         inputValue: ''
       });
-
-      this.props.onOutsideClicked();
     }
   };
 
   handleClickOutside = () => {
     this.handleCloseDropdown();
+    this.props.onOutsideClicked();
   };
 
   handleBodyClicked = event => {
