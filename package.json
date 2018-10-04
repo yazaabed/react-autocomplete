@@ -2,7 +2,7 @@
   "name": "@yazanaabed/react-autocomplete",
   "version": "0.1.0",
   "private": true,
-  "description": "This autocomplete component built to show what render props pattern can do with react and how much it flexiable",
+  "description": "This autocomplete component built to show what render props pattern can do with react and how much it flexible",
   "main": "index.js",
   "directories": {
     "lib": "lib",
