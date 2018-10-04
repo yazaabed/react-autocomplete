@@ -182,9 +182,15 @@ export default class Autocomplete extends React.Component {
 
     return {
       onChange: (event) => {
-        this.changeState({
+        let newState = {
           inputValue: event.target.value
-        });
+        };
+
+        if (!this.state.isOpen && !this.isControlledProps('isOpen')) {
+          newState['isOpen'] = true;
+        }
+
+        this.changeState(newState);
       },
       onKeyDown: (event) => {
         this.handleInputKeyUp(event);
