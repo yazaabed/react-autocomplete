@@ -8,58 +8,123 @@ This autocomplete component built to show what render props pattern can do with 
 
 ### Examples
 ```javascript
-<Autocomplete
-  isOpen={this.state.showDropdown}
-  onOutsideClicked={() => this.hideDropdown()}
-  onChange={(selection) => this.props.onSelectedItemChanged(selection)}>
-  {
-    ({
-       getContainerProps,
-       getItemProps,
-       getInputProps,
-       getMenuProps,
-       inputValue,
-       isOpen,
-       highlightedIndex
-     }) => {
-      let itemsFiltered = this.filterItemsBySearchInput(inputValue);
+import React from "react";
+import ReactDOM from "react-dom";
+import { Autocomplete } from "@yazanaabed/react-autocomplete";
+import styles from "./styles";
 
-      return (
-        isOpen? (
-          <div {...getContainerProps({ className: styles.dropdownContainer })}>
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-            <input type="text"
-                   {...getInputProps({
-                     className: styles.dropdownInput
-                   })} />
-
-            <span className={styles.hideIcon} onClick={() => this.hideDropdown()}>x</span>
-
-            <ul {...getMenuProps({ className: styles.menuDropdown })}>
-              {
-                itemsFiltered
-                  .map((item, index) =>
-                    <li {...getItemProps({ item, index })}>
-                      <ComponentExample
-                             active={index === highlightedIndex}
-                             className={styles.dropdownItem} />
-                    </li>
-                  )
-              }
-
-              {
-                !itemsFiltered.length?
-                  <li className={styles.noItemsFound}>
-                    <h1 className={styles.notFoundTitle}>Not found.</h1>
-                  </li> : null
-              }
-            </ul>
-          </div>
-        ): null
-      )
-    }
+    this.state = {
+      showDropdown: true,
+      items: [
+        {
+          username: "User1",
+          id: 1
+        },
+        {
+          username: "User2",
+          id: 2
+        }
+      ],
+      selectedItem: []
+    };
   }
-</Autocomplete>
+
+  filterItemsBySearchInput = inputValue => {
+    return this.state.items.filter(
+      item =>
+        !inputValue ||
+        item.username.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+  onSelectedItemChanged = selection => {
+    this.setState(prevState => {
+      console.log(prevState, selection);
+
+      let selectedItem = [...prevState.selectedItem];
+      let isItemFound = selectedItem.find(item => item.id === selection.id);
+
+      if (!isItemFound) {
+        selectedItem.push(selection);
+      }
+
+      return {
+        selectedItem
+      };
+    });
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <Autocomplete
+          onChange={selection => this.onSelectedItemChanged(selection)}
+        >
+          {({
+              getContainerProps,
+              getItemProps,
+              getInputProps,
+              getMenuProps,
+              inputValue,
+              isOpen,
+              highlightedIndex
+            }) => {
+            let itemsFiltered = this.filterItemsBySearchInput(inputValue);
+
+            return (
+              <div
+                {...getContainerProps({ className: styles.dropdownContainer })}
+              >
+                <input
+                  type="text"
+                  {...getInputProps({
+                    className: styles.dropdownInput
+                  })}
+                />
+
+                {isOpen ? (
+                  <ul {...getMenuProps({ className: styles.menuDropdown })}>
+                    {itemsFiltered.map((item, index) => (
+                      <li {...getItemProps({ item, index })}>
+                        <div
+                          className={styles.dropdownItem}
+                          style={{
+                            backgroundColor:
+                              highlightedIndex === index ? "#e0f4ea" : ""
+                          }}
+                        >
+                          {index}
+                          {item.username}
+                        </div>
+                      </li>
+                    ))}
+
+                    {!itemsFiltered.length ? (
+                      <li className={styles.noItemsFound}>
+                        <h1 className={styles.notFoundTitle}>Not found.</h1>
+                      </li>
+                    ) : null}
+                  </ul>
+                ) : null}
+              </div>
+            );
+          }}
+        </Autocomplete>
+
+        <h1 className={styles.title}>Here is the active items</h1>
+        <ul>
+          {this.state.selectedItem.map((item, index) => (
+            <li key={index}>{item.username}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+}
 ```
 
 ## Contributing
