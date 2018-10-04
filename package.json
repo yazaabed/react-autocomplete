@@ -10,7 +10,7 @@
   "dependencies": {},
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run copy && npm run compile && BUILD_PATH='lib' node build.js",
+    "build": "npm run copy && npm run compile && BUILD_PATH=lib node build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "copy": "cp package.json lib/ && cp README.md lib/ && cp .npmrc lib/",
