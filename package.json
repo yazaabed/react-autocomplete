@@ -1,8 +1,8 @@
 {
   "name": "@yazanaabed/react-autocomplete",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "This autocomplete component built to show what render props pattern can do with react and how much it flexible",
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "lib": "lib",
     "src": "src"
@@ -14,10 +14,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run copy && npm run compile",
+    "build": "npm run copy && npm run compile && BUILD_PATH='lib' node build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "copy": "cp package.json lib/ && cp README.md lib/ && cp .npmrc lib/ && cp index.js lib/",
+    "copy": "cp package.json lib/ && cp README.md lib/ && cp .npmrc lib/",
     "compile": "npm run compile-dev && npm run compile-prod",
     "compile-dev": "NODE_ENV=development babel src --out-dir lib/dev --copy-files",
     "compile-prod": "NODE_ENV=production babel lib/dev --out-dir lib/prod --copy-files"
