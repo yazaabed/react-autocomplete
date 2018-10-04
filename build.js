@@ -28,6 +28,7 @@ fs.writeFile(`./${buildPath}/index.js`, fileContent, function(err) {
 let packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 packageJson['main'] = 'index.js';
+delete packageJson['devDependencies'];
 
 console.log("........................................");
 console.log("Start appending package.json...");
