@@ -183,6 +183,7 @@ export default class Autocomplete extends React.Component {
     return {
       onChange: (event) => {
         this.changeState({
+          isOpen: true,
           inputValue: event.target.value
         });
       },
