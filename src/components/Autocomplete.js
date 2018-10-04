@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class Autocomplete extends React.Component {
   static defaultProps = {
-    onChange: (selection) => selection,
+    onChange: selection => selection,
     onOutsideClicked: () => {}
   };
 
@@ -10,7 +10,7 @@ export default class Autocomplete extends React.Component {
 
   state = {
     selectedItem: null,
-    inputValue: "",
+    inputValue: '',
     isOpen: this.props.isOpen || false,
     highlightedIndex: null
   };
@@ -23,20 +23,20 @@ export default class Autocomplete extends React.Component {
     document.removeEventListener('mousedown', this.handleBodyClicked);
   }
 
-  isControlledProps = (prop) => {
-    return typeof (this.props[prop]) !== "undefined"
+  isControlledProps = prop => {
+    return typeof this.props[prop] !== 'undefined';
   };
 
   handleCloseDropdown = () => {
-
     if (!this.isControlledProps('isOpen')) {
       this.changeState({
         isOpen: false,
-        inputValue: ""
+        inputValue: '',
+        highlightedIndex: null
       });
     } else {
       this.changeState({
-        inputValue: ""
+        inputValue: ''
       });
 
       this.props.onOutsideClicked();
@@ -47,7 +47,7 @@ export default class Autocomplete extends React.Component {
     this.handleCloseDropdown();
   };
 
-  handleBodyClicked = (event) => {
+  handleBodyClicked = event => {
     if (this.parentNode) {
       if (this.parentNode.contains(event.target)) {
         return event;
@@ -60,31 +60,36 @@ export default class Autocomplete extends React.Component {
   changeState = (newState, stateChanged) => {
     let prevState;
 
-    this.setState((state) => {
-      prevState = state;
+    this.setState(
+      state => {
+        prevState = state;
 
-      return Object.assign({}, state, newState);
-    }, () => {
-      stateChanged && stateChanged(prevState, this.state);
-    });
+        return Object.assign({}, state, newState);
+      },
+      () => {
+        stateChanged && stateChanged(prevState, this.state);
+      }
+    );
   };
 
-  onItemSelected = (item) => {
-    this.changeState({
-      selectedItem: item
-    }, (prevState, state) => {
-      this.items.splice(item);
-      this.props.onChange(item);
-    });
+  onItemSelected = item => {
+    this.changeState(
+      {
+        selectedItem: item
+      },
+      (prevState, state) => {
+        this.props.onChange(item);
+        this.handleCloseDropdown();
+      }
+    );
   };
 
   getItemProps = (options = {}) => {
-
     if (!options.item) {
       throw new Error('item attribute is required for getItemProps');
     }
 
-    if (typeof (options.index) === "undefined") {
+    if (typeof options.index === 'undefined') {
       throw new Error('index attribute is required for getItemProps');
     }
 
@@ -100,19 +105,21 @@ export default class Autocomplete extends React.Component {
     delete newOptions.className;
 
     return {
-      onClick: (event) => {
+      onClick: event => {
         this.onItemSelected(options.item);
       },
       key: options.key || options.index,
       className: [
         options.className,
-        (options.index === this.state.highlightedIndex) ? 'drop-down-active-li' : null
+        options.index === this.state.highlightedIndex
+          ? 'drop-down-active-li'
+          : null
       ].join(' '),
       ...newOptions
-    }
+    };
   };
 
-  handleInputKeyUp = (event) => {
+  handleInputKeyUp = event => {
     let index;
 
     if (this.state.highlightedIndex === null) {
@@ -135,7 +142,6 @@ export default class Autocomplete extends React.Component {
         break;
 
       case 13:
-        index -= 1;
         enterClicked = true;
         break;
 
@@ -150,7 +156,7 @@ export default class Autocomplete extends React.Component {
     }
 
     if (!isNotValidKey && isNotCloseClicked) {
-      index = index >= 0? index : 0;
+      index = index >= 0 ? index : 0;
       const item = Object.assign({}, this.items[index]);
 
       if (Object.keys(item).length) {
@@ -158,56 +164,64 @@ export default class Autocomplete extends React.Component {
           this.onItemSelected(item);
         }
 
-        this.changeState({
-          highlightedIndex: index
-        }, () => {
-          let activeElement = this.listElement.querySelector('.drop-down-active-li');
-          let listElement = this.listElement;
+        this.changeState(
+          {
+            highlightedIndex: index
+          },
+          () => {
+            let activeElement = this.listElement.querySelector(
+              '.drop-down-active-li'
+            );
+            let listElement = this.listElement;
 
-          if (activeElement) {
-            let activeElementItemTop = activeElement.offsetTop + activeElement.offsetHeight;
+            if (activeElement) {
+              let activeElementItemTop =
+                activeElement.offsetTop + activeElement.offsetHeight;
 
-            if (activeElementItemTop >= listElement.offsetHeight) {
-              this.listElement.scrollTop += activeElement.offsetHeight;
-            } else {
-              this.listElement.scrollTop -= activeElement.offsetHeight;
+              if (activeElementItemTop >= listElement.offsetHeight) {
+                this.listElement.scrollTop += activeElement.offsetHeight;
+              } else {
+                this.listElement.scrollTop -= activeElement.offsetHeight;
+              }
             }
           }
-        });
+        );
       }
     }
   };
 
   getInputProps = (options = {}) => {
-
     return {
-      onChange: (event) => {
-        this.changeState({
-          isOpen: true,
+      onChange: event => {
+        let newState = {
           inputValue: event.target.value
-        });
+        };
+
+        if (!this.state.isOpen && !this.isControlledProps('isOpen')) {
+          newState['isOpen'] = true;
+        }
+
+        this.changeState(newState);
       },
-      onKeyDown: (event) => {
+      onKeyDown: event => {
         this.handleInputKeyUp(event);
       },
       value: this.state.inputValue,
       autoComplete: 'off',
       ...options
-    }
+    };
   };
 
   getMenuProps = (options = {}) => {
-
     return {
-      ref: (node) => this.listElement = node,
+      ref: node => (this.listElement = node),
       ...options
-    }
+    };
   };
 
   getContainerProps = (options = {}) => {
-
     return {
-      ref: (node) => {
+      ref: node => {
         if (node) {
           this.parentNode = node;
           this.parentNode.querySelector('input').focus();
@@ -216,7 +230,7 @@ export default class Autocomplete extends React.Component {
         }
       },
       ...options
-    }
+    };
   };
 
   render() {
@@ -229,7 +243,9 @@ export default class Autocomplete extends React.Component {
       getInputProps: this.getInputProps,
       getMenuProps: this.getMenuProps,
       inputValue: this.state.inputValue,
-      isOpen: this.isControlledProps('isOpen') ? this.props.isOpen : this.state.isOpen,
+      isOpen: this.isControlledProps('isOpen')
+        ? this.props.isOpen
+        : this.state.isOpen,
       highlightedIndex: this.state.highlightedIndex
     });
   }
