@@ -223,7 +223,7 @@ export default class Autocomplete extends React.Component {
       ref: node => {
         if (node) {
           this.parentNode = node;
-          this.parentNode.querySelector('input').focus();
+         // this.parentNode.querySelector('input').focus();
         } else {
           delete this.parentNode;
         }
